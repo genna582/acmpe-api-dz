@@ -15,17 +15,19 @@ class ApiException(Exception):
 
 def _from_raw(raw_note: str) -> model.Note | str:
     parts = raw_note.split('|')
-    if len(parts) == 2:
+    if len(parts) == 3:
         note = model.Note()
         note.id = None
-        note.title = parts[0]
-        note.text = parts[1]
-        return note
-    elif len(parts) == 3:
-        note = model.Note()
-        note.id = parts[0]
+        note.date = parts[0]
         note.title = parts[1]
         note.text = parts[2]
+        return note
+    elif len(parts) == 4:
+        note = model.Note()
+        note.id = parts[0]
+        note.date = parts[1]
+        note.title = parts[2]
+        note.text = parts[3]
         return note
     else:
         raise ApiException(f"invalid RAW note data {raw_note}")
@@ -33,13 +35,13 @@ def _from_raw(raw_note: str) -> model.Note | str:
 
 def _to_raw(note: model.Note) -> str:
     if note.id is None:
-        return f"{note.title}|{note.text}"
+        return f"{note.date}|{note.title}|{note.text}"
     else:
-        return f"{note.id}|{note.title}|{note.text}"
+        return f"{note.id}|{note.date}|{note.title}|{note.text}"
 
 
 API_ROOT = "/api/v1"
-NOTE_API_ROOT = API_ROOT + "/note"
+NOTE_API_ROOT = API_ROOT + "/calendar"
 
 
 @app.route(NOTE_API_ROOT + "/", methods=['POST'])

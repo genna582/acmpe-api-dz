@@ -1,11 +1,12 @@
 from typing import List
 
-import model
 import db
+import model
 
 
-TITLE_LIMIT = 60
-TEXT_LIMIT = 120
+TITLE_LIMIT = 30
+TEXT_LIMIT = 200
+TEXT_DATE = '2023-10-23'
 
 
 class LogicException(Exception):
@@ -15,7 +16,6 @@ class LogicException(Exception):
 class NoteLogic:
     def __init__(self):
         self._note_db = db.NoteDB()
-
 
     @staticmethod
     def _validate_note(note: model.Note):
