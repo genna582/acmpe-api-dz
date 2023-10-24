@@ -1,10 +1,10 @@
 from flask import Flask
 from flask import request
 
-app = Flask(__name__)
-
 import model
 import logic
+
+app = Flask(__name__)
 
 _note_logic = logic.NoteLogic()
 
@@ -35,9 +35,14 @@ def _from_raw(raw_note: str) -> model.Note | str:
 
 def _to_raw(note: model.Note) -> str:
     if note.id is None:
-        return f"{note.date}|{note.title}|{note.text}"
+        return f"{note.date}" \
+               f"|{note.title}" \
+               f"|{note.text}"
     else:
-        return f"{note.id}|{note.date}|{note.title}|{note.text}"
+        return f"{note.id}" \
+               f"|{note.date}" \
+               f"|{note.title}" \
+               f"|{note.text}"
 
 
 API_ROOT = "/api/v1"
