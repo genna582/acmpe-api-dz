@@ -51,13 +51,26 @@ NOTE_API_ROOT = API_ROOT + "/calendar"
 
 @app.route(NOTE_API_ROOT + "/", methods=['POST'])
 def create():
-    try:
-        data = request.get_data().decode('utf-8')
-        note = _from_raw(data)
-        _id = _note_logic.create(note)
-        return f"new id: {_id}", 201
-    except Exception as ex:
-        return f"failed to CREATE with: {ex}", 404
+    er_notes = _note_logic.list()
+
+    data = request.get_data().decode('utf-8')
+    note = _from_raw(data)
+    note_date = note.date
+    er_note = 0
+
+    for note1 in er_notes:
+        if note_date == note1.date:
+            er_note = 1
+
+    if er_note == 0:
+        try:
+            _id = _note_logic.create(note)
+            return f"new id: {_id}", 201
+        except Exception as ex:
+            return f"failed to CREATE with: {ex}", 404
+    else:
+        return f"Запись на дату {note_date} уже существует," \
+               f" выберите другую дату", 404
 
 
 @app.route(NOTE_API_ROOT + "/", methods=['GET'])

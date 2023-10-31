@@ -1,12 +1,10 @@
 from typing import List
 
-import db
 import model
+import db
 
-
-TITLE_LIMIT = 30
-TEXT_LIMIT = 200
-TEXT_DATE = '2023-10-23'
+TITLE_LIMIT = 60
+TEXT_LIMIT = 120
 
 
 class LogicException(Exception):
